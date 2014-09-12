@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var debug = require('debug')('socket-test');
 var app = require('../app');
+var sockets = require('../socket.js');
 
 app.set('port', process.env.PORT || 3000);
 
@@ -10,17 +11,9 @@ var server = app.listen(app.get('port'), function() {
 });
 
 
-//Using socket.io to use our express server
-var io = require('socket.io').listen(server);
+
+sockets.startSocketServer(server);
 
 
-io.sockets.on('connection', function (socket) {
-    console.log('A new user connected!');
-    socket.emit('servermsg', { msg: 'The world is round, there is no up or down.' });
-
-    socket.on('clientmsg' , function (data) {
-    	console.log(data);
-    });
-});
 
 
